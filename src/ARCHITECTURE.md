@@ -1,0 +1,55 @@
+# Estrutura do projeto
+
+```text
+src/
+  app/
+    config/
+    providers/
+    router/
+    App.tsx
+  constants/
+    routes.ts
+    storageKeys.ts
+  components/
+    layout/
+      header/
+        index.tsx
+        styles.ts
+      hero/
+        index.tsx
+        styles.ts
+    ui/
+      recipe-card/
+        index.tsx
+        styles.ts
+  features/
+    auth/
+      api/
+      hooks/
+      model/
+      services/
+      ui/
+    recipes/
+      components/
+      hooks/
+      services/
+      types/
+  integrations/
+    google-sheets/
+  pages/
+    admin/
+    auth/
+    not-found/
+    recipes/
+  services/
+    storage/
+  shared/
+    api/
+    storage/
+  styles/
+    GlobalStyle.ts
+    theme.ts
+    variables.ts
+    styled.d.ts
+  main.tsx
+```
