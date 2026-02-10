@@ -37,6 +37,9 @@ src/
   integrations/
     google-sheets/
   pages/
+    Home/
+      index.tsx
+      styles.ts
     admin/
     auth/
     not-found/

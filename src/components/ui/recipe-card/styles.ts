@@ -15,6 +15,7 @@ export const CardRoot = styled.article<CardRootProps>`
   flex-direction: column;
   gap: 12px;
   overflow: hidden;
+  position: relative;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease;
@@ -24,6 +25,28 @@ export const CardRoot = styled.article<CardRootProps>`
       $clickable ? '0 14px 28px rgba(0, 0, 0, 0.1)' : '0 10px 24px rgba(0, 0, 0, 0.06)'};
     transform: ${({ $clickable }) => ($clickable ? 'translateY(-2px)' : 'none')};
   }
+`
+
+export const FavoriteButton = styled.button`
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid ${colorVariables.border};
+  border-radius: 9999px;
+  color: ${colorVariables.primary};
+  display: inline-flex;
+  font-size: 1rem;
+  height: 34px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 34px;
+  z-index: 2;
+`
+
+export const CardContent = styled.div<CardRootProps>`
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
 `
 
 export const CardImage = styled.img`

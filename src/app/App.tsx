@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { HEADER_HEIGHT, Header } from '../components/layout'
+import { Footer, HEADER_HEIGHT, Header } from '../components/layout'
 import { AppRouter } from './router'
 
 const AppShell = styled.main`
@@ -14,6 +14,7 @@ export default function App() {
       <AppShell>
         <AppRouter />
       </AppShell>
+      <Footer />
     </>
   )
 }

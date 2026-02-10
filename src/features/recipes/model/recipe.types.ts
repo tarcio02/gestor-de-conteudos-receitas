@@ -7,6 +7,7 @@ export type Recipe = {
   ingredients: string
   steps: string
   published: boolean
+  featured: boolean
   updated_at: string
 }
 
