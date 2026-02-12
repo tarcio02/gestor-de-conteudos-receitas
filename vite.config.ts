@@ -1,7 +1,17 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+const SCRIPT_EXEC =
+  'https://script.google.com/macros/s/AKfycbyJEJ4W4YJ1oiYOXPMR_XGJMn1jubkz7ms2LYPCJSflWpKrLl1Cbx7oE_td82GeCJo/exec'
+
 export default defineConfig({
-  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: SCRIPT_EXEC,
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })

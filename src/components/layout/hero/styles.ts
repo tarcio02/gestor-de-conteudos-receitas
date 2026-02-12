@@ -68,28 +68,23 @@ export const GradientOverlay = styled.div`
 `
 
 export const MainContent = styled.div`
+  align-items: flex-end;
+  display: flex;
+  inset: 0;
   margin: 0 auto;
   max-width: 80rem;
-  padding: 8rem 1.5rem 8rem;
-  position: relative;
+  padding: 40px;
+  position: absolute;
+  width: 100%;
   z-index: 10;
-
-  @media (min-width: 1024px) {
-    padding: 10rem 3rem 8rem;
-  }
 `
 
 export const ContentWrapper = styled.div`
   animation: ${fadeUp} 0.6s ease-out;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   max-width: 36rem;
-  min-height: 60vh;
-
-  @media (min-width: 601px) {
-    justify-content: center;
-  }
 `
 
 export const TextContent = styled.div`
@@ -141,7 +136,7 @@ export const ButtonsWrapper = styled(Link)<{ $delay?: string }>`
   animation-delay: ${({ $delay }) => $delay || '0s'};
   background-color: ${colorVariables.secondary};
   border-radius: 24px;
-  color: ${colorVariables.text};
+  color: ${colorVariables.white};
   display: inline-flex;
   font-size: 16px;
   font-weight: 700;
@@ -170,11 +165,16 @@ export const CarouselButton = styled.button`
   border-radius: 50%;
   color: ${colorVariables.white};
   display: inline-flex;
-  font-size: 1.1rem;
-  font-weight: 700;
   height: 32px;
   justify-content: center;
+  line-height: 0;
+  padding: 0;
   width: 32px;
+
+  svg {
+    display: block;
+    flex-shrink: 0;
+  }
 `
 
 export const DotsContainer = styled.div`

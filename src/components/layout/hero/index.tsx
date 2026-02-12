@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as S from './styles'
 
 import banner1 from '../../../assets/images/banners/banner.webp'
@@ -97,7 +98,7 @@ export function Hero() {
 
             <S.CarouselControls $delay="0.6s">
               <S.CarouselButton onClick={handlePrev} aria-label="Slide anterior" type="button">
-                {'<'}
+                <ChevronLeft aria-hidden size={18} />
               </S.CarouselButton>
 
               <S.DotsContainer>
@@ -113,7 +114,7 @@ export function Hero() {
               </S.DotsContainer>
 
               <S.CarouselButton onClick={handleNext} aria-label="Proximo slide" type="button">
-                {'>'}
+                <ChevronRight aria-hidden size={18} />
               </S.CarouselButton>
             </S.CarouselControls>
           </S.TextContent>

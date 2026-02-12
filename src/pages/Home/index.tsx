@@ -1,26 +1,39 @@
-import { useMemo, useState } from 'react'
-import { Hero } from '../../components/layout'
-import { RecipeCard } from '../../components/ui'
+import { useEffect, useMemo, useState } from 'react'
+import { Heart, ScrollText, Star } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
+import { ApiMessage, Hero, Loading } from '../../components/layout'
+import { RecipeCard, RecipeModal } from '../../components/ui'
 import { usePublicRecipes } from '../../features/recipes/hooks/usePublicRecipes'
 import { buildHomeSections } from '../../features/recipes/model/buildHomeSections'
 import { getFavoriteIds, toggleFavorite } from '../../features/recipes/model/favorites.storage'
+import type { Recipe } from '../../features/recipes/model/recipe.types'
 import * as S from './styles'
 
 export default function Home() {
   const { data, loading, error } = usePublicRecipes()
+  const location = useLocation()
 
-  // ✅ Favoritos reais + re-render quando mudar
   const [favoriteIds, setFavoriteIds] = useState<string[]>(() => getFavoriteIds())
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
 
   const sections = useMemo(() => {
     return buildHomeSections(data, { favoriteIds })
   }, [data, favoriteIds])
 
+  useEffect(() => {
+    if (location.hash !== '#favoritas') return
+
+    const favoriteSection = document.getElementById('favorites-section')
+    if (!favoriteSection) return
+
+    favoriteSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [location.hash, sections])
+
   if (loading) {
     return (
       <S.Main>
         <Hero />
-        <S.FeedbackText>Carregando receitas...</S.FeedbackText>
+        <Loading message="Carregando receitas..." />
       </S.Main>
     )
   }
@@ -29,7 +42,7 @@ export default function Home() {
     return (
       <S.Main>
         <Hero />
-        <S.FeedbackText>Erro: {String(error)}</S.FeedbackText>
+        <ApiMessage message={`Nao foi possivel carregar as receitas. ${String(error)}`} />
       </S.Main>
     )
   }
@@ -49,8 +62,26 @@ export default function Home() {
 
       <S.SectionsContainer>
         {sections.map((section) => (
-          <section key={`${section.kind}-${section.title}`}>
-            <S.SectionTitle>{section.title}</S.SectionTitle>
+          <S.SectionBlock
+            key={`${section.kind}-${section.title}`}
+            id={section.kind === 'favorites' ? 'favorites-section' : undefined}
+          >
+            <S.SectionTitle>
+              {section.kind === 'featured' ? (
+                <S.SectionTitleIcon $tone="primary">
+                  <Star size={14} />
+                </S.SectionTitleIcon>
+              ) : section.kind === 'favorites' ? (
+                <S.SectionTitleIcon $tone="primary">
+                  <Heart size={14} fill="currentColor" />
+                </S.SectionTitleIcon>
+              ) : (
+                <S.SectionTitleIcon $tone="primary">
+                  <ScrollText size={14} />
+                </S.SectionTitleIcon>
+              )}
+              {section.title}
+            </S.SectionTitle>
 
             <S.CardsGrid>
               {section.recipes.map((recipe) => (
@@ -58,19 +89,21 @@ export default function Home() {
                   key={recipe.id}
                   title={recipe.title}
                   imageUrl={recipe.image_url}
-                  // ✅ Se seu RecipeCard suportar favoritos, isso ativa a seção "Favoritas"
+                  description={recipe.description}
+                  timeInMinutes={recipe.time}
                   isFavorite={favoriteIds.includes(recipe.id)}
                   onFavorite={() => setFavoriteIds(toggleFavorite(recipe.id))}
                   onClick={() => {
-                    // Depois: navegar para /recipe/:slug
-                    console.log('open recipe', recipe.slug)
+                    setSelectedRecipe(recipe)
                   }}
                 />
               ))}
             </S.CardsGrid>
-          </section>
+          </S.SectionBlock>
         ))}
       </S.SectionsContainer>
+
+      <RecipeModal isOpen={Boolean(selectedRecipe)} recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
     </S.Main>
   )
 }

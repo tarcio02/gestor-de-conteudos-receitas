@@ -1,4 +1,3 @@
-import { env } from '../../app/config/env'
 import { HttpError } from './HttpError'
 
 type HttpMethod = 'GET' | 'POST'
@@ -8,21 +7,55 @@ type HttpOptions = {
   body?: unknown
 }
 
+// Envelope que o Apps Script retorna
+type ApiEnvelope<T> = {
+  ok: boolean
+  status: number
+  data?: T
+  error?: string
+}
+
 export async function http<T>(path: string, options: HttpOptions = {}): Promise<T> {
-  const base = env.API_BASE_URL.replace(/\/$/, '')
+  // ✅ Em DEV vamos chamar o proxy do Vite (/api)
+  // ✅ Em PROD você pode setar VITE_API_BASE_URL (ex: /api ou https://seu-backend.com/api)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const base = (import.meta as any).env?.VITE_API_BASE_URL ?? '/api'
+
   const url = `${base}${path.startsWith('/') ? '' : '/'}${path}`
+  const method = options.method ?? 'GET'
+  const hasBody = options.body !== undefined && method !== 'GET'
+  const headers = hasBody ? { 'Content-Type': 'application/json' } : undefined
 
   const res = await fetch(url, {
-    method: options.method ?? 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    body: options.body ? JSON.stringify(options.body) : undefined,
+    method,
+    headers,
+    body: hasBody ? JSON.stringify(options.body) : undefined,
   })
 
   const text = await res.text()
-  const data = text ? safeJsonParse(text) : null
+  const parsed = text ? safeJsonParse(text) : null
 
-  if (!res.ok) throw new HttpError(res.status, data)
-  return data as T
+  // Se não é JSON, segue padrão antigo
+  if (!parsed || typeof parsed !== 'object') {
+    if (!res.ok) throw new HttpError(res.status, parsed)
+    return parsed as T
+  }
+
+  // ✅ Se veio envelope do Apps Script, usamos o "ok/status" dele
+  if ('ok' in parsed && 'status' in parsed) {
+    const env = parsed as ApiEnvelope<T>
+
+    if (!env.ok) {
+      throw new HttpError(env.status || res.status || 500, env)
+    }
+
+    // env.data é o payload real do endpoint (/recipes retorna {data: Recipe[]})
+    return (env.data as T) ?? ({} as T)
+  }
+
+  // ✅ Se veio JSON direto (sem envelope)
+  if (!res.ok) throw new HttpError(res.status, parsed)
+  return parsed as T
 }
 
 function safeJsonParse(text: string) {

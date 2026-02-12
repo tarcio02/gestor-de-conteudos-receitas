@@ -12,13 +12,25 @@ src/
     storageKeys.ts
   components/
     layout/
+      Api-message/
+        index.tsx
+        styles.ts
+      Login/
+        index.tsx
+        styles.ts
       header/
+        index.tsx
+        styles.ts
+      menu-lateral/
         index.tsx
         styles.ts
       hero/
         index.tsx
         styles.ts
     ui/
+      menu-hamburguer/
+        index.tsx
+        styles.ts
       recipe-card/
         index.tsx
         styles.ts
