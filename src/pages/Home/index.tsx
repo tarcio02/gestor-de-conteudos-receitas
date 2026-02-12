@@ -21,13 +21,17 @@ export default function Home() {
   }, [data, favoriteIds])
 
   useEffect(() => {
-    if (location.hash !== '#favoritas') return
+    if (location.hash !== '#receitas') return
 
-    const favoriteSection = document.getElementById('favorites-section')
-    if (!favoriteSection) return
+    const timeoutId = window.setTimeout(() => {
+      const recipesSection = document.getElementById('receitas')
+      if (!recipesSection) return
 
-    favoriteSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [location.hash, sections])
+      recipesSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 0)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [location.hash, sections.length])
 
   if (loading) {
     return (
@@ -61,10 +65,10 @@ export default function Home() {
       <Hero />
 
       <S.SectionsContainer>
-        {sections.map((section) => (
+        {sections.map((section, index) => (
           <S.SectionBlock
             key={`${section.kind}-${section.title}`}
-            id={section.kind === 'favorites' ? 'favorites-section' : undefined}
+            id={index === 0 ? 'receitas' : undefined}
           >
             <S.SectionTitle>
               {section.kind === 'featured' ? (

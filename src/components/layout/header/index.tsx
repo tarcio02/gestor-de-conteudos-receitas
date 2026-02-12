@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Heart, Instagram, MessageCircle, ShoppingBag } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
 import logoSdf from '../../../assets/logo-sdf.svg'
 import { ROUTES } from '../../../constants/routes'
 import { MenuHamburguer } from '../../ui'
@@ -20,6 +21,7 @@ export function Header() {
   const [isVisible, setIsVisible] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const lastScrollY = useRef(0)
+  const location = useLocation()
 
   useEffect(() => {
     function onScroll() {
@@ -92,7 +94,17 @@ export function Header() {
           <Logo src={logoSdf} alt="SDF" />
 
           <ActionsGroup>
-            <NavButton to={{ pathname: ROUTES.recipes, hash: '#favoritas' }}>
+            <NavButton
+              to={{ pathname: ROUTES.recipes, hash: '#receitas' }}
+              onClick={() => {
+                if (location.pathname !== ROUTES.recipes) return
+
+                window.setTimeout(() => {
+                  const recipesSection = document.getElementById('receitas')
+                  recipesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }, 0)
+              }}
+            >
               <Heart aria-hidden size={16} />
               Favoritos
             </NavButton>
