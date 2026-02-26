@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { recipesApi } from '../api/recipes.api'
-import type { Recipe } from '../model/recipe.types'
 import { useParams } from 'react-router-dom'
+import { footerApi } from '../api'
+import type { FooterConfig } from '../model/footer.types'
 
-export function usePublicRecipes() {
-  const [data, setData] = useState<Recipe[]>([])
+export function usePublicFooterConfig() {
+  const [data, setData] = useState<FooterConfig | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { user_id } = useParams()
@@ -14,11 +14,11 @@ export function usePublicRecipes() {
 
     ;(async () => {
       try {
-        const res = await recipesApi.listPublic(user_id ?? '')
-        if (alive) setData(res.data)
+        const response = await footerApi.getPublicConfig(user_id ?? '')
+        if (alive) setData(response.data)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        if (alive) setError(e?.message ?? 'Erro ao carregar receitas')
+        if (alive) setError(e?.message ?? 'Erro ao carregar configuracao do footer')
       } finally {
         if (alive) setLoading(false)
       }

@@ -1,16 +1,62 @@
-import { colorVariables } from './variables'
+type ThemeColors = {
+  background: string
+  surface: string
+  text: string
+  textMuted: string
+  primary: string
+  secondary: string
+  white: string
+  border: string
+}
 
-export const theme = {
+type ThemeFonts = {
+  primary: string
+  secondary: string
+}
+
+export type AppTheme = {
+  colors: ThemeColors
+  fonts: ThemeFonts
+}
+
+export const defaultTheme: AppTheme = {
   colors: {
-    background: colorVariables.white,
-    surface: colorVariables.white,
-    text: colorVariables.text,
-    textMuted: colorVariables.textMuted,
-    primary: colorVariables.primary,
-    secondary: colorVariables.secondary,
-    white: colorVariables.white,
-    border: colorVariables.border,
+    background: '#ffffff',
+    surface: '#ffffff',
+    text: '#1f2933',
+    textMuted: '#52606d',
+    primary: '#a80707',
+    secondary: '#ffa801',
+    white: '#ffffff',
+    border: '#d9e2ec',
   },
-} as const
+  fonts: {
+    primary: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+    secondary: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+  },
+}
 
-export type AppTheme = typeof theme
+export type ThemeOverrides = {
+  colors?: {
+    primary?: string
+    secondary?: string
+  }
+  fonts?: {
+    primary?: string
+    secondary?: string
+  }
+}
+
+export function buildTheme(overrides: ThemeOverrides = {}): AppTheme {
+  return {
+    ...defaultTheme,
+    colors: {
+      ...defaultTheme.colors,
+      ...(overrides.colors ?? {}),
+    },
+    fonts: {
+      ...defaultTheme.fonts,
+      ...(overrides.fonts ?? {}),
+    },
+  }
+}

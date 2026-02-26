@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { Footer, Header } from '../components/layout'
+import { Footer } from '../components/layout'
+import { Header } from '../features/header'
 import { AppRouter } from './router'
 
 const AppShell = styled.main`

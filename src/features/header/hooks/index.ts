@@ -1,0 +1,1 @@
+export { usePublicHeaderConfig } from './usePublicHeaderConfig'

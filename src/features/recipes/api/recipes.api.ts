@@ -24,14 +24,17 @@ function parseTSV(tsv: string) {
 }
 
 export const recipesApi = {
-  async listPublic(): Promise<RecipesResponse> {
+  async listPublic(userId: string): Promise<RecipesResponse> {
+    // Adicionando o parâmetro userId
     if (!TSV_URL) throw new Error('VITE_API_RECIPES não configurado')
 
     const res = await fetch(TSV_URL)
     const tsv = await res.text()
+    const normalizedUserId = String(userId ?? '').trim()
 
     const data = parseTSV(tsv)
-      .filter((r) => String(r.published).trim().toUpperCase() === 'TRUE')
+      .filter((r) => String(r.published).trim().toUpperCase() === 'TRUE') // Filtra receitas publicadas
+      .filter((r) => String(r.user_id ?? '').trim() === normalizedUserId) // Filtro para o user_id
       .map((r) => ({
         id: String(r.id ?? ''),
         title: String(r.title ?? ''),

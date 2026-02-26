@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { recipesApi } from '../api/recipes.api'
-import type { Recipe } from '../model/recipe.types'
 import { useParams } from 'react-router-dom'
+import { headerApi } from '../api'
+import type { HeaderConfig } from '../model/header.types'
 
-export function usePublicRecipes() {
-  const [data, setData] = useState<Recipe[]>([])
+export function usePublicHeaderConfig() {
+  const [data, setData] = useState<HeaderConfig | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { user_id } = useParams()
@@ -14,11 +14,11 @@ export function usePublicRecipes() {
 
     ;(async () => {
       try {
-        const res = await recipesApi.listPublic(user_id ?? '')
-        if (alive) setData(res.data)
+        const response = await headerApi.getPublicConfig(user_id ?? '')
+        if (alive) setData(response.data)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        if (alive) setError(e?.message ?? 'Erro ao carregar receitas')
+        if (alive) setError(e?.message ?? 'Erro ao carregar configuracao do header')
       } finally {
         if (alive) setLoading(false)
       }

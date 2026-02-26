@@ -8,6 +8,8 @@ export const GlobalStyle = createGlobalStyle`
     --color-text: ${({ theme }) => theme.colors.text};
     --color-text-muted: ${({ theme }) => theme.colors.textMuted};
     --color-border: ${({ theme }) => theme.colors.border};
+    --font-primary: ${({ theme }) => theme.fonts.primary};
+    --font-secondary: ${({ theme }) => theme.fonts.secondary};
   }
 
   *,
@@ -19,9 +21,24 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background-color: var(--color-white);
     color: var(--color-text);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-secondary);
     margin: 0;
     min-width: 320px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-primary);
+  }
+
+  p,
+  small,
+  label {
+    font-family: var(--font-secondary);
   }
 
   footer {

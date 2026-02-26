@@ -5,9 +5,24 @@ import * as S from './styles'
 type Props = {
   isOpen: boolean
   onClose: () => void
+  whatsappHref: string
+  whatsappLabel: string
+  instagramUrl: string
+  ecommerceLink: string
 }
 
-export function MenuLateral({ isOpen, onClose }: Props) {
+export function MenuLateral({
+  isOpen,
+  onClose,
+  whatsappHref,
+  whatsappLabel,
+  instagramUrl,
+  ecommerceLink,
+}: Props) {
+  const hasWhatsapp = Boolean(String(whatsappHref ?? '').trim())
+  const hasInstagram = Boolean(String(instagramUrl ?? '').trim())
+  const hasEcommerce = Boolean(String(ecommerceLink ?? '').trim())
+
   return (
     <>
       <S.Overlay $isOpen={isOpen} aria-label="Fechar menu lateral" onClick={onClose} />
@@ -20,25 +35,31 @@ export function MenuLateral({ isOpen, onClose }: Props) {
           </S.CloseButton>
         </S.HeaderRow>
 
-        <S.MenuExternalLink href="https://wa.me/5500000000000" target="_blank" rel="noreferrer">
-          <MessageCircle size={16} aria-hidden />
-          WhatsApp
-        </S.MenuExternalLink>
+        {hasWhatsapp ? (
+          <S.MenuExternalLink href={whatsappHref} target="_blank" rel="noreferrer">
+            <MessageCircle size={16} aria-hidden />
+            {whatsappLabel}
+          </S.MenuExternalLink>
+        ) : null}
 
-        <S.MenuExternalLink href="https://www.instagram.com" target="_blank" rel="noreferrer">
-          <Instagram size={16} aria-hidden />
-          Instagram
-        </S.MenuExternalLink>
+        {hasInstagram ? (
+          <S.MenuExternalLink href={instagramUrl} target="_blank" rel="noreferrer">
+            <Instagram size={16} aria-hidden />
+            Instagram
+          </S.MenuExternalLink>
+        ) : null}
 
         <S.MenuLink to={ROUTES.recipes} onClick={onClose}>
           <Heart size={16} aria-hidden />
           Favoritos
         </S.MenuLink>
 
-        <S.MenuLink to={ROUTES.login} onClick={onClose}>
-          <ShoppingBag size={16} aria-hidden />
-          Ver Produtos
-        </S.MenuLink>
+        {hasEcommerce ? (
+          <S.MenuExternalLink href={ecommerceLink} target="_blank" rel="noreferrer" onClick={onClose}>
+            <ShoppingBag size={16} aria-hidden />
+            Ver Produtos
+          </S.MenuExternalLink>
+        ) : null}
       </S.Panel>
     </>
   )

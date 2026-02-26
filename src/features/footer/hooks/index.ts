@@ -1,0 +1,1 @@
+export { usePublicFooterConfig } from './usePublicFooterConfig'

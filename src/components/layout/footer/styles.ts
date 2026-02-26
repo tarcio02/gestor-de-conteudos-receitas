@@ -1,3 +1,4 @@
+﻿import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { colorVariables } from '../../../styles/variables'
 
@@ -10,7 +11,7 @@ export const FooterContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin: 0 auto;
   max-width: 1200px;
   padding: 18px 24px 22px;
@@ -21,27 +22,17 @@ export const CopyText = styled.p`
   margin: 0;
 `
 
-export const SocialLinks = styled.div`
-  display: flex;
-  gap: 12px;
-`
-
-export const SocialButton = styled.a`
-  align-items: center;
-  border: 0;
-  color: ${colorVariables.white};
-  display: inline-flex;
-  justify-content: center;
+export const LoginLink = styled(Link)`
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+  padding: 4px 10px;
   text-decoration: none;
+  transition: color 0.18s ease, border-color 0.18s ease;
 
   &:hover {
+    border-color: ${colorVariables.secondary};
     color: ${colorVariables.secondary};
   }
-`
-
-export const LocationText = styled.p`
-  align-items: center;
-  display: inline-flex;
-  gap: 6px;
-  margin: 0;
 `

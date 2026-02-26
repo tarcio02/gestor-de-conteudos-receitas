@@ -1,0 +1,1 @@
+export { usePublicHero } from './usePublicHero'
