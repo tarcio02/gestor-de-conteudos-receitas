@@ -1,50 +1,50 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../../constants/routes'
-import { useAuth } from '../hooks/useAuth'
+import { useSignup } from '../hooks/useSignup'
 import { Container, ErrorText, FormCard, FormLink, Input, Label, SubmitButton, Title } from './styles'
 
-export function LoginForm() {
-  const { login, loading, error } = useAuth()
+export function SignupForm() {
+  const { signup, loading, error } = useSignup()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    await login({ email, password })
-    navigate(ROUTES.admin)
+    await signup({ email, password })
+    navigate(ROUTES.login)
   }
 
   return (
     <Container>
       <FormCard onSubmit={onSubmit}>
-        <Title>Login</Title>
+        <Title>Cadastro</Title>
 
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="signup-email">Email</Label>
         <Input
-          id="email"
+          id="signup-email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           autoComplete="email"
         />
 
-        <Label htmlFor="password">Senha</Label>
+        <Label htmlFor="signup-password">Senha</Label>
         <Input
-          id="password"
+          id="signup-password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          autoComplete="current-password"
+          autoComplete="new-password"
         />
 
         {error && <ErrorText>{error}</ErrorText>}
 
         <SubmitButton disabled={loading} type="submit">
-          {loading ? 'Entrando...' : 'Entrar'}
+          {loading ? 'Cadastrando...' : 'Cadastrar'}
         </SubmitButton>
-        <FormLink to={ROUTES.signup}>Criar cadastro</FormLink>
+        <FormLink to={ROUTES.login}>Ja tenho conta</FormLink>
       </FormCard>
     </Container>
   )

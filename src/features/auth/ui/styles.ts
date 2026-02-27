@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { colorVariables } from '../../../styles/variables'
 
@@ -71,5 +72,17 @@ export const SubmitButton = styled.button`
   &:disabled {
     cursor: not-allowed;
     opacity: 0.72;
+  }
+`
+
+export const FormLink = styled(Link)`
+  color: ${colorVariables.textMuted};
+  font-size: 0.9rem;
+  justify-self: center;
+  text-decoration: none;
+
+  &:hover {
+    color: ${colorVariables.primary};
+    text-decoration: underline;
   }
 `

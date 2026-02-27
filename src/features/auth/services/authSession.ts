@@ -1,5 +1,5 @@
-const AUTH_TOKEN_KEY = 'auth_token'
+import { authStorage } from '../../../shared/storage/authStorage'
 
 export function isAuthenticated(): boolean {
-  return Boolean(window.localStorage.getItem(AUTH_TOKEN_KEY))
+  return Boolean(authStorage.getToken())
 }

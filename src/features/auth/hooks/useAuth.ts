@@ -1,6 +1,5 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { authApi } from '../api/auth.api'
-import { authStorage } from '../../../shared/storage/authStorage'
 import type { LoginInput } from '../model/auth.types'
 
 export function useAuth() {
@@ -10,14 +9,12 @@ export function useAuth() {
   async function login(data: LoginInput) {
     setLoading(true)
     setError(null)
+
     try {
-      const res = await authApi.login(data)
-      authStorage.setToken(res.token)
-      return res
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      // aqui você pode usar HttpError depois para mensagens melhores
-      setError(e?.message ?? 'Erro ao fazer login')
+      return await authApi.login(data)
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Erro ao fazer login'
+      setError(message)
       throw e
     } finally {
       setLoading(false)
@@ -25,7 +22,7 @@ export function useAuth() {
   }
 
   function logout() {
-    authStorage.clear()
+    authApi.logout()
   }
 
   return { login, logout, loading, error }
